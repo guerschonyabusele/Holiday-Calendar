@@ -9,49 +9,61 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: green; /* Solid green background */
-            color: red; /* Red text */
+            background: linear-gradient(135deg, #2e8b57, #b22222); /* Christmas gradient background */
+            color: white; /* White text for contrast */
             overflow: hidden;
             position: relative;
         }
+
         h1 {
             text-align: center;
             margin-top: 20px;
         }
+
+        /* Countdown Styling */
         .counter {
             font-size: 2em;
             text-align: center;
             margin-bottom: 20px;
             animation: fadeIn 2s ease-in-out;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.6); /* Sparkle effect */
         }
+
+        /* Calendar Styling */
         .calendar {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 5px;
             max-width: 350px;
             margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly opaque background */
             padding: 10px;
-            border-radius: 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Drop shadow */
             animation: fadeIn 3s ease-in-out;
         }
+
         .calendar div {
             padding: 10px;
             text-align: center;
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+
         .calendar .today {
             background-color: #ff6347;
             color: white;
             font-weight: bold;
         }
+
         .calendar .sunday {
             color: red;
         }
+
         .calendar .saturday {
             color: blue;
         }
+
         .calendar div:hover {
             background-color: rgba(255, 255, 255, 0.3);
             cursor: pointer;
@@ -67,6 +79,7 @@
             user-select: none;
             pointer-events: none;
             animation: snow 10s linear infinite;
+            will-change: transform; /* Optimizing animation */
         }
 
         /* Snow falling animation */
@@ -88,13 +101,45 @@
                 opacity: 1;
             }
         }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .calendar {
+                max-width: 100%;
+                grid-template-columns: repeat(7, 1fr); /* Ensure 7 columns on mobile */
+                font-size: 0.8em; /* Smaller font on mobile */
+            }
+
+            .counter {
+                font-size: 1.5em; /* Smaller countdown text */
+            }
+        }
+
+        /* For very small screens */
+        @media (max-width: 480px) {
+            .calendar {
+                grid-template-columns: repeat(7, 1fr);
+                max-width: 100%;
+                font-size: 0.7em; /* Even smaller font */
+            }
+
+            .counter {
+                font-size: 1.2em;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .calendar div:focus {
+            outline: 2px solid yellow; /* Highlight focused element */
+            background-color: rgba(255, 255, 255, 0.3); /* Add background for focus */
+        }
     </style>
 </head>
 <body>
     <h1>Christmas Countdown and December Calendar</h1>
 
     <!-- Countdown Timer -->
-    <div class="counter">
+    <div class="counter" aria-live="polite">
         Time Until Christmas: <span id="countdown"></span>
     </div>
 
@@ -122,7 +167,7 @@
 
         // Function to create snowflakes
         function createSnowflakes() {
-            const snowflakeCount = 100; // Increased number of snowflakes for more coverage
+            const snowflakeCount = window.innerWidth <= 480 ? 50 : 100; // Fewer snowflakes on mobile
             const snowContainer = document.body;
 
             for (let i = 0; i < snowflakeCount; i++) {
@@ -176,10 +221,34 @@
             }
         }
 
-        // Initialize countdown, calendar, and snowflakes
+        // Function to change mood based on the time of day
+        function changeMoodBasedOnTime() {
+            const now = new Date();
+            const hour = now.getHours();
+            const greeting = document.createElement('div');
+            greeting.style.textAlign = 'center';
+            greeting.style.fontSize = '1.5em';
+            greeting.style.padding = '20px';
+
+            if (hour < 12) {
+                document.body.style.backgroundColor = "#fff8e1"; // Morning glow
+                greeting.textContent = "Good Morning! Have a jolly day!";
+            } else if (hour < 18) {
+                document.body.style.backgroundColor = "#f4a300"; // Afternoon glow
+                greeting.textContent = "Good Afternoon! Keep spreading cheer!";
+            } else {
+                document.body.style.backgroundColor = "#2e2b2b"; // Evening glow
+                greeting.textContent = "Good Evening! Time to cozy up!";
+            }
+
+            document.body.appendChild(greeting);
+        }
+
+        // Initialize countdown, calendar, snowflakes, and mood
         setInterval(updateCountdown, 1000); // Update countdown every second
         generateCalendar(); // Generate the calendar dynamically
         createSnowflakes(); // Create snowflakes
+        changeMoodBasedOnTime(); // Change mood based on time of day
     </script>
 </body>
 </html>

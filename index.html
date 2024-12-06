@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christmas Countdown and December Calendar</title>
     <style>
+        /* Importing the Algerian font if it's available in the system */
+        @import url('https://fonts.googleapis.com/css2?family=Algerian&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Algerian', sans-serif; /* Use Algerian font */
             margin: 0;
             padding: 0;
             background: linear-gradient(135deg, #2e8b57, #b22222); /* Christmas gradient background */
@@ -230,11 +233,11 @@
             const greeting = document.createElement('div');
             greeting.style.textAlign = 'center';
             greeting.style.fontSize = '1.5em';
-            greeting.style.padding = '20px';
+            greeting.style.padding = '10px';
 
             if (hour < 12) {
-                document.body.style.backgroundColor = "#fff8e1"; // Morning glow
-                greeting.textContent = "Good Morning! Have a jolly day!";
+                document.body.style.backgroundColor = "#ffddc1"; // Morning warmth
+                greeting.textContent = "Good Morning! The countdown to Christmas begins!";
             } else if (hour < 18) {
                 document.body.style.backgroundColor = "#ffddc1"; // Afternoon warmth
                 greeting.textContent = "Good Afternoon! Christmas cheer is in the air!";
@@ -253,4 +256,4 @@
         changeMoodBasedOnTime(); // Change mood based on time of day
     </script>
 </body>
-</html>       
+</html>

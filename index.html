@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,10 +8,18 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, green, red);
+            color: white;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
         }
         .counter {
             font-size: 2em;
+            text-align: center;
             margin-bottom: 20px;
         }
         .calendar {
@@ -19,11 +28,15 @@
             gap: 5px;
             max-width: 350px;
             margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.1); /* Slight transparency */
+            padding: 10px;
+            border-radius: 10px;
         }
         .calendar div {
             padding: 10px;
             text-align: center;
             border: 1px solid #ddd;
+            border-radius: 5px;
         }
         .calendar .today {
             background-color: #ff6347;
@@ -35,6 +48,10 @@
         }
         .calendar .saturday {
             color: blue;
+        }
+        .calendar div:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
         }
     </style>
 </head>

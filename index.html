@@ -76,6 +76,28 @@
             color: blue;
         }
 
+        /* Special styling for Christmas Day */
+        .calendar .christmas-day {
+            background-color: gold;
+            color: red;
+            font-weight: bold;
+            border: 3px solid #ff4500; /* Bright red border */
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); /* Gold glow effect */
+            animation: christmasGlow 1.5s infinite alternate; /* Animated glow */
+        }
+
+        /* Christmas Day glowing animation */
+        @keyframes christmasGlow {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            }
+            100% {
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 1);
+            }
+        }
+
         .calendar div:hover {
             background-color: rgba(255, 255, 255, 0.3);
             cursor: pointer;
@@ -217,6 +239,10 @@
                 // Highlight today
                 if (day === new Date().getDate()) {
                     dayDiv.classList.add('today');
+                }
+                // Highlight Christmas Day (December 25th)
+                if (day === 25) {
+                    dayDiv.classList.add('christmas-day');
                 }
                 // Highlight Sundays and Saturdays
                 if (new Date('December ' + day + ', ' + new Date().getFullYear()).getDay() === 0) {

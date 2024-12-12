@@ -76,14 +76,13 @@
             color: blue;
         }
 
-        /* Special styling for Christmas Day */
         .calendar .christmas-day {
             background-color: gold;
             color: red;
             font-weight: bold;
-            border: 3px solid #ff4500; /* Bright red border */
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); /* Gold glow effect */
-            animation: christmasGlow 1.5s infinite alternate; /* Animated glow */
+            border: 3px solid #ff4500;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            animation: christmasGlow 1.5s infinite alternate;
         }
 
         /* Christmas Day glowing animation */
@@ -101,7 +100,7 @@
         .calendar div:hover {
             background-color: rgba(255, 255, 255, 0.3);
             cursor: pointer;
-            transform: scale(1.1); /* Slightly enlarge on hover */
+            transform: scale(1.1);
         }
 
         /* Snowflakes */
@@ -117,7 +116,6 @@
             will-change: transform;
         }
 
-        /* Snow falling animation */
         @keyframes snow {
             0% {
                 transform: translateX(0) translateY(0);
@@ -161,6 +159,37 @@
                 font-size: 1.5em;
             }
         }
+
+        /* Christmas Tree Decoration Game */
+        #game-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .tree {
+            position: relative;
+            width: 200px;
+            margin: 0 auto;
+        }
+
+        .tree img {
+            width: 100%;
+        }
+
+        .decoration-item {
+            width: 30px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .selected {
+            border: 3px solid red;
+        }
+
+        .decoration {
+            position: absolute;
+        }
     </style>
 </head>
 <body>
@@ -174,6 +203,20 @@
     <!-- December Calendar -->
     <div class="calendar" id="calendar"></div>
 
+    <!-- Christmas Tree Decoration Game -->
+    <div id="game-container">
+        <h2>Decorate the Christmas Tree!</h2>
+        <div class="tree">
+            <img src="tree.png" alt="Christmas Tree" />
+            <div class="decoration" onclick="addDecoration(this)"></div>
+        </div>
+        <div class="decorations">
+            <img src="star.png" alt="Star" class="decoration-item" onclick="selectDecoration(this)" />
+            <img src="ball.png" alt="Ornament" class="decoration-item" onclick="selectDecoration(this)" />
+            <img src="ribbon.png" alt="Ribbon" class="decoration-item" onclick="selectDecoration(this)" />
+        </div>
+    </div>
+
     <script>
         // Countdown to Christmas (December 25th)
         function updateCountdown() {
@@ -184,80 +227,86 @@
             }
 
             const timeDiff = christmas - now;
-
             const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
             document.getElementById("countdown").textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            // Play sound when countdown hits zero
+            if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+                let audio = new Audio('christmas-bell.mp3');
+                audio.play();
+            }
         }
 
-        // Function to create snowflakes
+        // Create snowflakes
         function createSnowflakes() {
-            const snowflakeCount = 100; // Number of snowflakes
+            const snowflakeCount = 100;
             const snowContainer = document.body;
 
             for (let i = 0; i < snowflakeCount; i++) {
-                let snowflake = document.createElement('div');
+                const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
-                snowflake.innerHTML = '&#10052;'; // Unicode snowflake character
+                snowflake.innerHTML = '&#10052;';
                 snowflake.style.left = `${Math.random() * 100}vw`;
-                snowflake.style.animationDuration = `${Math.random() * 10 + 5}s`; // Random speed
-                snowflake.style.animationDelay = `${Math.random() * 5}s`; // Random delay
-                snowflake.style.fontSize = `${Math.random() * 1 + 0.5}em`; // Random size
-                snowflake.style.setProperty('--direction', Math.random() > 0.5 ? 1 : -1); // Random left-right movement
-
+                snowflake.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                snowflake.style.fontSize = `${Math.random() * 1 + 0.5}em`;
+                snowflake.style.setProperty('--direction', Math.random() > 0.5 ? 1 : -1);
                 snowContainer.appendChild(snowflake);
             }
         }
 
-        // Function to generate the December calendar dynamically
+        // Generate the December calendar
         function generateCalendar() {
-            const calendarContainer = document.getElementById("calendar");
-            const daysInDecember = 31;
-            const firstDayOfDecember = new Date('December 1, ' + new Date().getFullYear()).getDay();
+            const calendar = document.getElementById('calendar');
+            const daysInMonth = 31;
+            const firstDayOfMonth = new Date('December 1, 2024').getDay(); // Sunday = 0, Monday = 1, etc.
             
-            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            // Create weekday headers
-            weekdays.forEach(day => {
-                const div = document.createElement('div');
-                div.textContent = day;
-                calendarContainer.appendChild(div);
-            });
-
-            // Empty spaces before December 1st
-            for (let i = 0; i < firstDayOfDecember; i++) {
-                const emptyDiv = document.createElement('div');
-                calendarContainer.appendChild(emptyDiv);
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                calendar.innerHTML += '<div></div>'; // Empty cells before 1st
             }
 
-            // Create days of December
-            for (let day = 1; day <= daysInDecember; day++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.textContent = day;
-                // Highlight today
-                if (day === new Date().getDate()) {
-                    dayDiv.classList.add('today');
-                }
-                // Highlight Christmas Day (December 25th)
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateDiv = document.createElement('div');
+                dateDiv.textContent = day;
                 if (day === 25) {
-                    dayDiv.classList.add('christmas-day');
+                    dateDiv.classList.add('christmas-day'); // Special class for Christmas Day
                 }
-                // Highlight Sundays and Saturdays
-                if (new Date('December ' + day + ', ' + new Date().getFullYear()).getDay() === 0) {
-                    dayDiv.classList.add('sunday');
-                } else if (new Date('December ' + day + ', ' + new Date().getFullYear()).getDay() === 6) {
-                    dayDiv.classList.add('saturday');
+                if (day === new Date().getDate()) {
+                    dateDiv.classList.add('today'); // Highlight today
                 }
-                calendarContainer.appendChild(dayDiv);
+
+                // Add to the calendar
+                calendar.appendChild(dateDiv);
             }
         }
 
-        // Initialize countdown, calendar, snowflakes
-        setInterval(updateCountdown, 1000); // Update countdown every second
-        generateCalendar(); // Generate the calendar dynamically
-        createSnowflakes(); // Create snowflakes
+        // Game Logic (Christmas Tree Decoration)
+        let selectedDecoration = null;
+
+        function selectDecoration(element) {
+            selectedDecoration = element;
+            element.classList.add('selected');
+        }
+
+        function addDecoration(target) {
+            if (selectedDecoration) {
+                const clone = selectedDecoration.cloneNode(true);
+                clone.classList.remove('selected');
+                target.appendChild(clone);
+            }
+        }
+
+        // Initializations
+        updateCountdown();
+        createSnowflakes();
+        generateCalendar();
+
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>

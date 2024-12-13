@@ -1,259 +1,525 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christmas Countdown and December Calendar</title>
-    <style>
-        /* Importing the Algerian font */
-        @import url('https://fonts.googleapis.com/css2?family=Algerian&display=swap');
+<!DOCTYPE html> 
 
-        /* Overall body styling */
-        body {
-            font-family: 'Algerian', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #2e8b57, #b22222); /* Christmas gradient */
-            color: white;
-            overflow: hidden;
-            position: relative;
-            background-size: cover;
-        }
+<html lang="en"> 
 
-        /* Header styling */
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 2.5em;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7); /* Glowing effect */
-        }
+<head> 
 
-        /* Countdown styling */
-        .counter {
-            font-size: 2.5em;
-            text-align: center;
-            margin: 20px;
-            animation: fadeIn 2s ease-in-out;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6); /* Snowy glow effect */
-        }
+    <meta charset="UTF-8"> 
 
-        /* Calendar grid styling */
-        .calendar {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 15px;
-            max-width: 600px;
-            margin: 40px auto;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Soft shadow */
-            animation: fadeIn 3s ease-in-out;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 
-        .calendar div {
-            padding: 25px;
-            font-size: 1.8em;
-            text-align: center;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
+    <title>Christmas Countdown and December Calendar</title> 
 
-        .calendar .today {
-            background-color: #ff6347;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(255, 99, 71, 0.7);
-        }
+    <style> 
 
-        .calendar .sunday {
-            color: red;
-        }
+        /* Importing the Algerian font */ 
 
-        .calendar .saturday {
-            color: blue;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Algerian&display=swap'); 
 
-        .calendar .christmas-day {
-            background-color: gold;
-            color: red;
-            font-weight: bold;
-            border: 3px solid #ff4500;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-            animation: christmasGlow 1.5s infinite alternate;
-        }
+  
 
-        /* Christmas Day glowing animation */
-        @keyframes christmasGlow {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-            }
-            100% {
-                transform: scale(1.1);
-                box-shadow: 0 0 20px rgba(255, 215, 0, 1);
-            }
-        }
+        /* Overall body styling */ 
 
-        .calendar div:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transform: scale(1.1);
-        }
+        body { 
 
-        /* Snowflakes */
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            color: white;
-            font-size: 1em;
-            z-index: 9999;
-            user-select: none;
-            pointer-events: none;
-            animation: snow 12s linear infinite;
-            will-change: transform;
-        }
+            font-family: 'Algerian', sans-serif; 
 
-        @keyframes snow {
-            0% {
-                transform: translateX(0) translateY(0);
-            }
-            100% {
-                transform: translateX(calc(100px * var(--direction))) translateY(100vh);
-            }
-        }
+            margin: 0; 
 
-        /* Countdown fade-in animation */
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
+            padding: 0; 
 
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            .calendar {
-                max-width: 90%;
-                font-size: 1.2em;
-            }
+            background: linear-gradient(135deg, #2e8b57, #b22222); /* Christmas gradient */ 
 
-            .counter {
-                font-size: 2em;
-            }
-        }
+            color: white; 
 
-        /* For very small screens */
-        @media (max-width: 480px) {
-            .calendar {
-                grid-template-columns: repeat(7, 1fr);
-                max-width: 100%;
-                font-size: 1em;
-            }
+            overflow: hidden; 
 
-            .counter {
-                font-size: 1.5em;
-            }
-        }
+            position: relative; 
 
-        /* Background Music Controls */
-        #music-player {
-            text-align: center;
-            margin-top: 20px;
-        }
+            background-size: cover; 
 
-        #music-player button {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            background-color: #ff6347;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <h1>Christmas Countdown and December Calendar</h1>
+        } 
 
-    <!-- Countdown Timer -->
-    <div class="counter" aria-live="polite">
-        Time Until Christmas: <span id="countdown"></span>
-    </div>
+  
 
-    <!-- December Calendar -->
-    <div class="calendar" id="calendar"></div>
+        /* Header styling */ 
 
-    <!-- Music Controls -->
-    <div id="music-player">
-        <button onclick="toggleMusic()">Toggle Christmas Music</button>
-    </div>
+        h1 { 
 
-    <script>
-        // Countdown to Christmas (December 25th)
-        function updateCountdown() {
-            const now = new Date();
-            const christmas = new Date('December 25, ' + now.getFullYear());
-            if (now > christmas) {
-                christmas.setFullYear(now.getFullYear() + 1); // If it's already past Christmas, countdown to next year.
-            }
+            text-align: center; 
 
-            const timeDiff = christmas - now;
-            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            margin-top: 20px; 
 
-            document.getElementById("countdown").textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-        }
+            font-size: 2.5em; 
 
-        // Music handling
-        let musicPlaying = false;
-        let music = new Audio('christmas-music.mp3'); // Ensure this path is correct
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7); /* Glowing effect */ 
 
-        function toggleMusic() {
-            if (musicPlaying) {
-                music.pause();
-            } else {
-                music.play();
-            }
-            musicPlaying = !musicPlaying;
-        }
+        } 
 
-        // Generate December Calendar
-        function generateCalendar() {
-            const calendar = document.getElementById('calendar');
-            const daysInMonth = 31;
-            const firstDayOfMonth = new Date('December 1, 2024').getDay(); // Sunday = 0, Monday = 1, etc.
+  
 
-            for (let i = 0; i < firstDayOfMonth; i++) {
-                calendar.innerHTML += '<div></div>'; // Empty cells before 1st
-            }
+        /* Countdown styling */ 
 
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dateDiv = document.createElement('div');
-                dateDiv.textContent = day;
-                if (day === 25) {
-                    dateDiv.classList.add('christmas-day'); // Special class for Christmas Day
-                }
-                if (day === new Date().getDate()) {
-                    dateDiv.classList.add('today'); // Highlight today
-                }
+        .counter { 
 
-                // Add to the calendar
-                calendar.appendChild(dateDiv);
-            }
-        }
+            font-size: 2.5em; 
 
-        // Initialize
-        updateCountdown();
-        generateCalendar();
+            text-align: center; 
 
-        // Update countdown every second
-        setInterval(updateCountdown, 1000);
-    </script>
-</body>
-</html>
+            margin: 20px; 
+
+            animation: fadeIn 2s ease-in-out; 
+
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6); /* Snowy glow effect */ 
+
+        } 
+
+  
+
+        /* Calendar grid styling */ 
+
+        .calendar { 
+
+            display: grid; 
+
+            grid-template-columns: repeat(7, 1fr); 
+
+            gap: 15px; 
+
+            max-width: 600px; 
+
+            margin: 40px auto; 
+
+            background-color: rgba(255, 255, 255, 0.1); 
+
+            padding: 30px; 
+
+            border-radius: 20px; 
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Soft shadow */ 
+
+            animation: fadeIn 3s ease-in-out; 
+
+        } 
+
+  
+
+        .calendar div { 
+
+            padding: 25px; 
+
+            font-size: 1.8em; 
+
+            text-align: center; 
+
+            border: 2px solid #ddd; 
+
+            border-radius: 10px; 
+
+            transition: all 0.3s ease; 
+
+            background-color: rgba(255, 255, 255, 0.2); 
+
+        } 
+
+  
+
+        .calendar .today { 
+
+            background-color: #ff6347; 
+
+            color: white; 
+
+            font-weight: bold; 
+
+            box-shadow: 0 0 15px rgba(255, 99, 71, 0.7); 
+
+        } 
+
+  
+
+        .calendar .sunday { 
+
+            color: red; 
+
+        } 
+
+  
+
+        .calendar .saturday { 
+
+            color: blue; 
+
+        } 
+
+  
+
+        /* Special styling for Christmas Day */ 
+
+        .calendar .christmas-day { 
+
+            background-color: gold; 
+
+            color: red; 
+
+            font-weight: bold; 
+
+            border: 3px solid #ff4500; /* Bright red border */ 
+
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); /* Gold glow effect */ 
+
+            animation: christmasGlow 1.5s infinite alternate; /* Animated glow */ 
+
+        } 
+
+  
+
+        /* Christmas Day glowing animation */ 
+
+        @keyframes christmasGlow { 
+
+            0% { 
+
+                transform: scale(1); 
+
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); 
+
+            } 
+
+            100% { 
+
+                transform: scale(1.1); 
+
+                box-shadow: 0 0 20px rgba(255, 215, 0, 1); 
+
+            } 
+
+        } 
+
+  
+
+        .calendar div:hover { 
+
+            background-color: rgba(255, 255, 255, 0.3); 
+
+            cursor: pointer; 
+
+            transform: scale(1.1); /* Slightly enlarge on hover */ 
+
+        } 
+
+  
+
+        /* Snowflakes */ 
+
+        .snowflake { 
+
+            position: absolute; 
+
+            top: -10px; 
+
+            color: white; 
+
+            font-size: 1em; 
+
+            z-index: 9999; 
+
+            user-select: none; 
+
+            pointer-events: none; 
+
+            animation: snow 12s linear infinite; 
+
+            will-change: transform; 
+
+        } 
+
+  
+
+        /* Snow falling animation */ 
+
+        @keyframes snow { 
+
+            0% { 
+
+                transform: translateX(0) translateY(0); 
+
+            } 
+
+            100% { 
+
+                transform: translateX(calc(100px * var(--direction))) translateY(100vh); 
+
+            } 
+
+        } 
+
+  
+
+        /* Countdown fade-in animation */ 
+
+        @keyframes fadeIn { 
+
+            0% { 
+
+                opacity: 0; 
+
+            } 
+
+            100% { 
+
+                opacity: 1; 
+
+            } 
+
+        } 
+
+  
+
+        /* Mobile responsiveness */ 
+
+        @media (max-width: 768px) { 
+
+            .calendar { 
+
+                max-width: 90%; 
+
+                font-size: 1.2em; 
+
+            } 
+
+  
+
+            .counter { 
+
+                font-size: 2em; 
+
+            } 
+
+        } 
+
+  
+
+        /* For very small screens */ 
+
+        @media (max-width: 480px) { 
+
+            .calendar { 
+
+                grid-template-columns: repeat(7, 1fr); 
+
+                max-width: 100%; 
+
+                font-size: 1em; 
+
+            } 
+
+  
+
+            .counter { 
+
+                font-size: 1.5em; 
+
+            } 
+
+        } 
+
+    </style> 
+
+</head> 
+
+<body> 
+
+    <h1>Christmas Countdown and December Calendar</h1> 
+
+  
+
+    <!-- Countdown Timer --> 
+
+    <div class="counter" aria-live="polite"> 
+
+        Time Until Christmas: <span id="countdown"></span> 
+
+    </div> 
+
+  
+
+    <!-- December Calendar --> 
+
+    <div class="calendar" id="calendar"></div> 
+
+  
+
+    <script> 
+
+        // Countdown to Christmas (December 25th) 
+
+        function updateCountdown() { 
+
+            const now = new Date(); 
+
+            const christmas = new Date('December 25, ' + now.getFullYear()); 
+
+            if (now > christmas) { 
+
+                christmas.setFullYear(now.getFullYear() + 1); // If it's already past Christmas, countdown to next year. 
+
+            } 
+
+  
+
+            const timeDiff = christmas - now; 
+
+  
+
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24)); 
+
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
+
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60)); 
+
+            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000); 
+
+  
+
+            document.getElementById("countdown").textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`; 
+
+        } 
+
+  
+
+        // Function to create snowflakes 
+
+        function createSnowflakes() { 
+
+            const snowflakeCount = 100; // Number of snowflakes 
+
+            const snowContainer = document.body; 
+
+  
+
+            for (let i = 0; i < snowflakeCount; i++) { 
+
+                let snowflake = document.createElement('div'); 
+
+                snowflake.classList.add('snowflake'); 
+
+                snowflake.innerHTML = '&#10052;'; // Unicode snowflake character 
+
+                snowflake.style.left = `${Math.random() * 100}vw`; 
+
+                snowflake.style.animationDuration = `${Math.random() * 10 + 5}s`; // Random speed 
+
+                snowflake.style.animationDelay = `${Math.random() * 5}s`; // Random delay 
+
+                snowflake.style.fontSize = `${Math.random() * 1 + 0.5}em`; // Random size 
+
+                snowflake.style.setProperty('--direction', Math.random() > 0.5 ? 1 : -1); // Random left-right movement 
+
+  
+
+                snowContainer.appendChild(snowflake); 
+
+            } 
+
+        } 
+
+  
+
+        // Function to generate the December calendar dynamically 
+
+        function generateCalendar() { 
+
+            const calendarContainer = document.getElementById("calendar"); 
+
+            const daysInDecember = 31; 
+
+            const firstDayOfDecember = new Date('December 1, ' + new Date().getFullYear()).getDay(); 
+
+             
+
+            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; 
+
+            // Create weekday headers 
+
+            weekdays.forEach(day => { 
+
+                const div = document.createElement('div'); 
+
+                div.textContent = day; 
+
+                calendarContainer.appendChild(div); 
+
+            }); 
+
+  
+
+            // Empty spaces before December 1st 
+
+            for (let i = 0; i < firstDayOfDecember; i++) { 
+
+                const emptyDiv = document.createElement('div'); 
+
+                calendarContainer.appendChild(emptyDiv); 
+
+            } 
+
+  
+
+            // Create days of December 
+
+            for (let day = 1; day <= daysInDecember; day++) { 
+
+                const dayDiv = document.createElement('div'); 
+
+                dayDiv.textContent = day; 
+
+                // Highlight today 
+
+                if (day === new Date().getDate()) { 
+
+                    dayDiv.classList.add('today'); 
+
+                } 
+
+                // Highlight Christmas Day (December 25th) 
+
+                if (day === 25) { 
+
+                    dayDiv.classList.add('christmas-day'); 
+
+                } 
+
+                // Highlight Sundays and Saturdays 
+
+                if (new Date('December ' + day + ', ' + new Date().getFullYear()).getDay() === 0) { 
+
+                    dayDiv.classList.add('sunday'); 
+
+                } else if (new Date('December ' + day + ', ' + new Date().getFullYear()).getDay() === 6) { 
+
+                    dayDiv.classList.add('saturday'); 
+
+                } 
+
+                calendarContainer.appendChild(dayDiv); 
+
+            } 
+
+        } 
+
+  
+
+        // Initialize countdown, calendar, snowflakes 
+
+        setInterval(updateCountdown, 1000); // Update countdown every second 
+
+        generateCalendar(); // Generate the calendar dynamically 
+
+        createSnowflakes(); // Create snowflakes 
+
+    </script> 
+
+</body> 
+
+</html> 
